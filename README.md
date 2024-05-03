@@ -5,7 +5,7 @@ Frame to give u an idea of power badge progress/status. Demystifies
 
 1. Load data from warpcast api 
 ```
-curl https://api.warpcast.com/v2/power-badge-users | jq  | wc -l
+curl https://api.warpcast.com/v2/power-badge-users 
 ```
 
 2. Frame view 1: 

@@ -9,12 +9,28 @@ const frameHandler = frames(async (ctx) => {
     // start process to get users, will store
     const startResponse = await fetch(`https://frame-backend-production.up.railway.app/start/${ctx.message?.requesterFid}`);
     const data = await startResponse.json();
+    console.log(`data: ${data}`);
     console.log(`START RESPONSE: ${JSON.stringify(data)}`);
     //https://frame-backend-production.up.railway.app/start/309
     // check if user data is loaded //https://frame-backend-production.up.railway.app/start/309start/309
     //const response = await fetch(`https://frame-backend-production.up.railway.app/start/309user-relevant-cast/${ctx.message?.requesterFid}`);
     // console.log(`RESPONSE FROM BACKEND: ${JSON.stringify(response)}`);
-    
+    if (data?.status === 'processing') {
+      return {
+        image: (
+          <div tw='flex' style={{ flexDirection: 'column' }}>
+            <p>Finding you a new friend...</p>
+            <p>Refresh below</p>
+          </div>
+        ),
+        state: ctx.state,
+        buttons: [
+          <Button action="post" target={{ pathname: "/", query: { action: 'start' } }}>
+            Refresh
+          </Button>,
+        ],
+      }
+    }
     // get users openrank
     
     const dummyRank = 2245;

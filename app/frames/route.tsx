@@ -15,7 +15,7 @@ const frameHandler = frames(async (ctx) => {
     // check if user data is loaded //https://frame-backend-production.up.railway.app/start/309start/309
     //const response = await fetch(`https://frame-backend-production.up.railway.app/start/309user-relevant-cast/${ctx.message?.requesterFid}`);
     // console.log(`RESPONSE FROM BACKEND: ${JSON.stringify(response)}`);
-    if (data?.status === 'processing') {
+    if (data?.status === 'processing' || !data?.user) {
       return {
         image: (
           <div tw='flex' style={{ flexDirection: 'column' }}>

@@ -5,9 +5,9 @@ import { appURL } from "../utils";
 
 const frameHandler = frames(async (ctx) => {
 
-  if (ctx.pressedButton && ctx.searchParams.action === 'start') {
+  if (ctx.pressedButton && (ctx.searchParams.action === 'start' || ctx.searchParams.action === 'refresh')) {
     // start process to get users, will store
-    const startResponse = await fetch(`https://frame-backend-production.up.railway.app/start/${ctx.message?.requesterFid}`);
+    const startResponse = await fetch(`https://frame-backend-production.up.railway.app/start/${ctx.message?.requesterFid}?action=${encodeURIComponent(ctx.searchParams.action)}`);
     const data = await startResponse.json();
     console.log(`data: ${data}`);
     console.log(`START RESPONSE: ${JSON.stringify(data)}`);
@@ -25,7 +25,7 @@ const frameHandler = frames(async (ctx) => {
         ),
         state: ctx.state,
         buttons: [
-          <Button action="post" target={{ pathname: "/", query: { action: 'start' } }}>
+          <Button action="post" target={{ pathname: "/", query: { action: 'refresh' } }}>
             Refresh
           </Button>,
         ],
@@ -33,9 +33,7 @@ const frameHandler = frames(async (ctx) => {
     }
     // get users openrank
     
-    const dummyRank = 2245;
-    const dummyPowerBadgeNumber = 4486;
-    const dummyHasPowerBadge = true;
+    console.log(`data: ${JSON.stringify(data)}`)
     // display loading screen with openrank
     return {
       image: (

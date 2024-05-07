@@ -7,7 +7,7 @@ const frameHandler = frames(async (ctx) => {
 
   if (ctx.pressedButton && (ctx.searchParams.action === 'start' || ctx.searchParams.action === 'refresh')) {
     // start process to get users, will store
-    const startResponse = await fetch(`https://frame-backend-production.up.railway.app/start/${ctx.message?.requesterFid}?action=${encodeURIComponent(ctx.searchParams.action)}`);
+    const startResponse = await fetch(`https://frame-backend-production.up.railway.app/start/${ctx.message?.requesterFid}?action=${encodeURIComponent(ctx.searchParams.action)}&timestamp=${encodeURIComponent((new Date()).getUTCMilliseconds())}`);
     const data = await startResponse.json();
     console.log(`data: ${data}`);
     console.log(`START RESPONSE: ${JSON.stringify(data)}`);

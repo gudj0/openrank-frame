@@ -5,9 +5,12 @@ import { appURL } from "../utils";
 
 const frameHandler = frames(async (ctx) => {
 
+  console.log(`Search Params: ${JSON.stringify(ctx.searchParams)}`);
   if (ctx.pressedButton && (ctx.searchParams.action === 'start' || ctx.searchParams.action === 'refresh')) {
     // start process to get users, will store
-    const startResponse = await fetch(`https://frame-backend-production.up.railway.app/start/${ctx.message?.requesterFid}?action=${encodeURIComponent(ctx.searchParams.action)}&timestamp=${encodeURIComponent((new Date()).getUTCMilliseconds())}`);
+    const fetchUrl = `https://frame-backend-production.up.railway.app/start/${ctx.message?.requesterFid}?action=${encodeURIComponent(ctx.searchParams.action)}&timestamp=${encodeURIComponent((new Date()).getUTCMilliseconds())}`
+    console.log(`FETCH URL: ${fetchUrl}`);
+    const startResponse = await fetch(fetchUrl);
     const data = await startResponse.json();
     console.log(`data: ${data}`);
     console.log(`START RESPONSE: ${JSON.stringify(data)}`);
@@ -17,12 +20,7 @@ const frameHandler = frames(async (ctx) => {
     // console.log(`RESPONSE FROM BACKEND: ${JSON.stringify(response)}`);
     if (data?.status === 'processing' || !data?.user) {
       return {
-        image: (
-          <div tw='flex' style={{ flexDirection: 'column' }}>
-            <p>Finding you a new friend...</p>
-            <p>Refresh below</p>
-          </div>
-        ),
+        image: '../Loading.gif',
         state: ctx.state,
         buttons: [
           <Button action="post" target={{ pathname: "/", query: { action: 'refresh' } }}>
@@ -38,7 +36,7 @@ const frameHandler = frames(async (ctx) => {
     return {
       image: (
         <div tw='flex' style={{ flexDirection: 'column' }}>
-          <p>You're OpenRank: #{data?.user?.openRank?.rank}</p>
+          <p>Your OpenRank: #{data?.user?.openRank?.rank}</p>
           <p>You {data?.user?.powerBadge ? 'have' : 'do not have'} a Power Badge</p>
         </div>
       ),
